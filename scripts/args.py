@@ -11,9 +11,9 @@ def get_main_args():
 
     # arg("--base_dir", type=str, default="LiveEO_ML_intern_challenge", help="Data Directory")
     # data directory?
-    arg("--base_dir", type=str, default="C:\Test\Building_data", help="Data Directory")
+    arg("--base_dir", type=str, default=r"C:\Test\Building_data", help="Data Directory")
 
-    arg ("--num_workers", type=int, default=2, help="DataLoader num_workers")
+    arg ("--num_workers", type=int, default=8, help="DataLoader num_workers")
     arg ("--in_channels", type=int, default=3, help="#Input Channels")
     arg ("--out_channels", type=int, default=1, help="#Output Channels")
     arg ("--learning_rate", type=float, default=1e-4, help="Learning Rate")
@@ -27,10 +27,10 @@ def get_main_args():
     arg("--save_path", type=str, default='./', help='Saves Path')
 
     arg("--samples_per_epoch", type=int, default=1000, help="Random Samples Per Epoch")
-
-    # image size 
-    arg("--crop_size", type=int, default=100, help="centered crop size")
     
+    # arg("--crop_size", type=int, default=480, help="centered crop size")
+    arg("--crop_size", type=int, default= 1080, help="centered crop size")
+
     arg("--batch_size", type=int, default=12, help="batch size")
     return parser.parse_args(args=[])
 

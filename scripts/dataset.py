@@ -6,7 +6,8 @@ from torchvision import transforms
 from torch.utils.data import Dataset, DataLoader, Sampler, BatchSampler
 from pytorch_lightning import LightningDataModule
 from sklearn.model_selection import train_test_split
-
+import torchvision.transforms.functional as TF
+from torchvision.transforms import CenterCrop
 
 
 class SpaceNet7(Dataset):
@@ -25,29 +26,47 @@ class SpaceNet7(Dataset):
     
     def OpenMask(self, idx):
         mask = io.imread(self.files[idx]['mask'])
-        return np.where(mask==255, 1, 0) #change the values to 0 and 1
-       
+        # return np.where(mask==255, 1, 0) #change the values to 0 and 1
+        return np.where(mask > 0.0001, 1, 0) #change the values to 0 and 1
     
     def __getitem__(self, idx):
         # read the images and masks as numpy arrays
-        x = self.OpenImage(idx, invert=True)
+        # x = self.OpenImage(idx, invert=True)
+        x = self.OpenImage(idx, invert=False)
         y = self.OpenMask(idx)
-        # padd the images to have a homogenous size (C, 1024, 1024)
-        x, y = self.padding((x,y[None]))
+        # padd the images to have a homogenous size (C, 1024, 1024) 
+
+        # x, y = self.padding((x,y[None]))
+        x = TF.to_tensor(x)
+        y = TF.to_tensor(y)
+        x = CenterCrop([self.crop_size, self.crop_size])(x)
+        y = CenterCrop([self.crop_size, self.crop_size])(y)
     
         # if it is the training phase, create random (C, 430, 430) crops
         # if it is the evaluation phase, we will leave the orginal size (C, 1024, 1024)
         if self.exec_mode =='train':
-            x, y = self.crop(x[None], y[None], self.crop_size)
-            x, y = x[0], y[0]
+
+            # x, y = self.crop(x[None], y[None], self.crop_size)
+            # print(x.shape, y.shape)
+            # Random crop
+
+            i, j, h, w = transforms.RandomCrop.get_params(x, output_size=(self.crop_size, self.crop_size))
+            x = TF.crop(x, i, j, h, w)
+            y = TF.crop(y, i, j, h, w)
+
+            # x, y = x[0], y[0]
         
         # numpy array --> torch tensor
         x = torch.tensor(x, dtype=torch.float32)
         y = torch.tensor(y, dtype=torch.uint8)
         
         # normalize the images (image- image.mean()/image.std())
-        normalize = transforms.Normalize(mean=[0.485, 0.456, 0.406],
-                                         std=[0.229, 0.224, 0.225]) 
+        # normalize = transforms.Normalize(mean=[0.485, 0.456, 0.406],
+        #                                  std=[0.229, 0.224, 0.225]) 
+
+        normalize = transforms.Normalize(mean=[0.20702111, 0.26308049, 0.24522567],
+                                         std=[0.11984661, 0.11106335, 0.09017803]) 
+
         return normalize(x), y
     
     
@@ -57,21 +76,36 @@ class SpaceNet7(Dataset):
     def padding (self, sample):
         image, mask = sample
         C, H, W = image.shape
-        if H == 1024 and W == 1024:
+        # if H == 1024 and W == 1024:
+        #     return image, mask
+        
+        # if  H != 1024:
+        #     image = np.pad(image, (((0,0), (1,0), (0,0))), 'constant', constant_values=(0))
+        #     mask  = np.pad(mask,  (((0,0), (1,0), (0,0))), 'constant', constant_values=(0))
+            
+        # if W != 1024:
+        #     image = np.pad(image, (((0,0), (0,0), (1,0))), 'constant', constant_values=(0))
+        #     mask  = np.pad(mask,  (((0,0), (0,0), (1,0))), 'constant', constant_values=(0))
+        
+        # return image, mask
+
+        if H == self.crop_size and W == self.crop_size:
             return image, mask
         
-        if  H != 1024:
+        if  H != self.crop_size:
             image = np.pad(image, (((0,0), (1,0), (0,0))), 'constant', constant_values=(0))
             mask  = np.pad(mask,  (((0,0), (1,0), (0,0))), 'constant', constant_values=(0))
             
-        if W != 1024:
+        if W != self.crop_size:
             image = np.pad(image, (((0,0), (0,0), (1,0))), 'constant', constant_values=(0))
             mask  = np.pad(mask,  (((0,0), (0,0), (1,0))), 'constant', constant_values=(0))
         
         return image, mask
 
     
-    def crop(self, data, seg, crop_size=256):
+    # def crop(self, data, seg, crop_size=256):
+    def crop(self, data, seg, crop_size= 1250):
+
         data_shape = tuple([len(data)] + list(data[0].shape))
         data_dtype = data[0].dtype
         dim = len(data_shape) - 2
