@@ -16,7 +16,7 @@ if __name__ == "__main__":
     callbacks.append(model_ckpt)
     dm = SpaceNet7DataModule(args)
     trainer = Trainer(callbacks=callbacks, enable_checkpointing=True, max_epochs=args.num_epochs, 
-                    enable_progress_bar=True, gpus=1, accelerator="gpu", amp_backend='apex', profiler='simple')
+                    enable_progress_bar=True, accelerator="auto", amp_backend='apex', profiler='simple')
 
     # train the model
     if args.exec_mode == 'train':
