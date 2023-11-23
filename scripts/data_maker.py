@@ -5,7 +5,8 @@ import rasterio.warp
 import rasterio.mask
 import matplotlib.pyplot as plt
 import rasterio.plot
-
+import rasterio.features
+import cv2
 # path
     # input
 pathZip = r"C:\Users\DUNG DO\Downloads\building_label.zip"
@@ -33,7 +34,6 @@ with rs.open(pathTif) as src:
     out_image, out_transform = rs.mask.mask(src, shapes)
     out_meta = src.meta
 
-out_image = rs.features.rasterize(shapes, out_shape = (1024,1024))
 # out_meta = src.meta
 
 # out_meta.update({"driver": "GTiff",
@@ -53,8 +53,10 @@ for y in range(0,srcImg.shape[2],height)]
 
 # cut mask image
 tiles_mask = [
-    out_image[:, x:x+width,y:y+height] for x in range(0,out_image.shape[1],width) \
+    out_image[0, x:x+width,y:y+height] for x in range(0,out_image.shape[1],width) \
 for y in range(0,out_image.shape[2],height)]
+
+tiles_mask = np.where(np.array(tiles_mask) > 0.0001, 255, 0)
 # tiles_im = np.array(tiles_im)
 # tiles_mask = np.array(tiles_mask)
 
@@ -69,7 +71,7 @@ for y in range(0,out_image.shape[2],height)]
 # rs.plot.show(out_image)
 # rs.plot.show(tiles_im[0])
 # rs.plot.show(tiles_mask[0])
-# print(np.array(tiles_im[0]).shape)
+print(np.array(tiles_mask[0]).shape)
 # print(out_image.shape)
 
 ## check
@@ -86,16 +88,23 @@ with rasterio.open(path, "w", **out_meta) as dest:
 
 # write to output folder
 
-for idx in range(len(tiles_im)):
-    path = pathOutImg + "\\" + str(idx) + ".png"
+# original image
 
-    with rasterio.open(path, "w", **out_meta) as dest:
-        dest.write(tiles_im[idx])
+# for idx in range(len(tiles_im)):
+#     path = pathOutImg + "\\" + str(idx) + ".png"
 
+#     with rasterio.open(path, "w", **out_meta) as dest:
+#         dest.write(tiles_im[idx])
 
-for idx in range(len(tiles_im)):
+# mask
+
+out_meta.update({"count": 1})
+
+for idx in range(len(tiles_mask)):
     path = pathOutLabel + "\\" + str(idx) + ".png"
 
-    with rasterio.open(path, "w", **out_meta) as dest:
-        dest.write(tiles_mask[idx])
+    cv2.imwrite(path, tiles_mask[idx])
+
+    # with rasterio.open(path, "w", **out_meta) as dest:
+    #     dest.write(tiles_mask[idx])
 

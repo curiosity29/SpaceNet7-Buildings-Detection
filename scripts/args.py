@@ -29,7 +29,7 @@ def get_main_args():
     arg("--samples_per_epoch", type=int, default=1000, help="Random Samples Per Epoch")
     
     # arg("--crop_size", type=int, default=480, help="centered crop size")
-    arg("--crop_size", type=int, default= 1080, help="centered crop size")
+    arg("--crop_size", type=int, default= 1088, help="centered crop size")
 
     arg("--batch_size", type=int, default=12, help="batch size")
     # return parser.parse_args(args=[])
