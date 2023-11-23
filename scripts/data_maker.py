@@ -33,10 +33,13 @@ with rs.open(pathTif) as src:
     out_image, out_transform = rs.mask.mask(src, shapes)
     out_meta = src.meta
 
-out_meta.update({"driver": "GTiff",
-                 "height": out_image.shape[1],
-                 "width": out_image.shape[2],
-                 "transform": out_transform})
+out_image = rs.features.rasterize(shapes, out_shape = (1024,1024))
+# out_meta = src.meta
+
+# out_meta.update({"driver": "GTiff",
+#                  "height": out_image.shape[1],
+#                  "width": out_image.shape[2],
+#                  "transform": out_transform})
 
 # Cut image multiple rectangular pieces
 

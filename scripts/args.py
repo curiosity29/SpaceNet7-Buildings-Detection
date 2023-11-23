@@ -32,7 +32,8 @@ def get_main_args():
     arg("--crop_size", type=int, default= 1080, help="centered crop size")
 
     arg("--batch_size", type=int, default=12, help="batch size")
-    return parser.parse_args(args=[])
+    # return parser.parse_args(args=[])
+    return parser.parse_args()
 
 
 
