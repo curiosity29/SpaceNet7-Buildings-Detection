@@ -20,6 +20,7 @@ class Unet(pl.LightningModule):
     def forward(self, img):
         return torch.argmax(self.model(img), dim=1)
         # return torch.argmax(self.model(img))
+        # return torch.argmax(self.model(img, dim=1))
     
     def training_step(self, batch, batch_idx):
         img, lbl = batch
@@ -39,8 +40,9 @@ class Unet(pl.LightningModule):
         preds = (nn.Sigmoid()(preds) > 0.5).int()
         lbl_np = lbl.detach().cpu().numpy()
         preds_np = preds.detach().cpu().numpy()
-        np.save(self.args.save_path + 'predictions.npy', preds_np)
-        np.save(self.args.save_path + 'labels.npy', lbl_np)
+        # np.save(self.args.save_path + 'predictions.npy', preds_np)
+        # np.save(self.args.save_path + 'labels.npy', lbl_np)
+        return self(batch)
 
     def training_epoch_end(self, outputs):
         torch.cuda.empty_cache()

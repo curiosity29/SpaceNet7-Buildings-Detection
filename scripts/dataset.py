@@ -104,7 +104,7 @@ class SpaceNet7(Dataset):
 
     
     # def crop(self, data, seg, crop_size=256):
-    def crop(self, data, seg, crop_size= 1250):
+    def crop(self, data, seg, crop_size= 1088):
 
         data_shape = tuple([len(data)] + list(data[0].shape))
         data_dtype = data[0].dtype
