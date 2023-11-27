@@ -23,13 +23,13 @@ def get_main_args():
 
     arg("--num_epochs", type=int, default=20, help="Number of Epochs")
     arg("--exec_mode", type=str, default='train', help='Execution Mode')
-    arg("--ckpt_path", type=str, default=None, help='Checkpoint Path')
+    arg("--ckpt_path", type=str, default= r"C:\Test\Github\SpaceNet7-Buildings-Detection\trained_models\best_model.ckpt", help='Checkpoint Path')
     arg("--save_path", type=str, default='./', help='Saves Path')
 
     arg("--samples_per_epoch", type=int, default=1000, help="Random Samples Per Epoch")
     
     # arg("--crop_size", type=int, default=480, help="centered crop size")
-    arg("--crop_size", type=int, default= 1088, help="centered crop size")
+    arg("--crop_size", type=int, default= 1088, help="centered crop size") # must be multiple of 64
 
     arg("--batch_size", type=int, default=12, help="batch size")
     # return parser.parse_args(args=[])

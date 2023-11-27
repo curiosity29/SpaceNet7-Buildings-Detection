@@ -18,7 +18,8 @@ class Unet(pl.LightningModule):
         self.dice = DiceSpaceNet7(n_class=self.args.out_channels)
         
     def forward(self, img):
-        return torch.argmax(self.model(img, dim=1))
+        return torch.argmax(self.model(img), dim=1)
+        # return torch.argmax(self.model(img))
     
     def training_step(self, batch, batch_idx):
         img, lbl = batch
