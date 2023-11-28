@@ -37,7 +37,7 @@ if __name__ == "__main__":
 
 
 # train
-# python ./SpaceNet7-Buildings-Detection/scripts/main.py --num_epochs 10 --crop_size 430 --exec_mode 'train'
+# python ./SpaceNet7-Buildings-Detection/scripts/main.py --num_epochs 10 --crop_size 1088 --exec_mode 'train'
 
 # test
 # python ./scripts/main.py --exec_mode 'evaluate' --ckpt_path './last.ckpt'
