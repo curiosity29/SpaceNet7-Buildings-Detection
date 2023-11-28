@@ -1,6 +1,16 @@
 import torch
 from argparse import ArgumentDefaultsHelpFormatter, ArgumentParser
 
+# original image: 5000x5000
+# cut into 100 input images: 500x500x3
+# masks: 500x500
+# crop into random part of size: 384 x 384 x c
+
+# arg to change:
+# base_dir: for data folder
+# ckpt_path: for checkpoint path
+# exec_mode: for train/evaluate
+# img_size: input image size
 
 
 def get_main_args():
@@ -13,7 +23,9 @@ def get_main_args():
     # data directory?
     arg("--base_dir", type=str, default=r"C:\Test\Building_data", help="Data Directory")
 
-    arg ("--num_workers", type=int, default=8, help="DataLoader num_workers")
+    arg("--img_size", type=int, default=500, help="input image size")
+
+    arg ("--num_workers", type=int, default=2, help="DataLoader num_workers")
     arg ("--in_channels", type=int, default=3, help="#Input Channels")
     arg ("--out_channels", type=int, default=1, help="#Output Channels")
     arg ("--learning_rate", type=float, default=1e-4, help="Learning Rate")
@@ -29,7 +41,7 @@ def get_main_args():
     arg("--samples_per_epoch", type=int, default=1000, help="Random Samples Per Epoch")
     
     # arg("--crop_size", type=int, default=480, help="centered crop size")
-    arg("--crop_size", type=int, default= 1088, help="centered crop size") # must be multiple of 64
+    arg("--crop_size", type=int, default= 384, help="centered crop size") # must be multiple of 64
 
     arg("--batch_size", type=int, default=12, help="batch size")
     # return parser.parse_args(args=[])

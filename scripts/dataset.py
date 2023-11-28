@@ -11,9 +11,10 @@ from torchvision.transforms import CenterCrop
 
 
 class SpaceNet7(Dataset):
-    def __init__(self, files, crop_size, exec_mode):
+    def __init__(self, files, img_size, crop_size, exec_mode):
         
         self.files = files
+        self.img_size = img_size
         self.crop_size = crop_size
         self.exec_mode = exec_mode
     
@@ -34,13 +35,11 @@ class SpaceNet7(Dataset):
         # x = self.OpenImage(idx, invert=True)
         x = self.OpenImage(idx, invert=False)
         y = self.OpenMask(idx)
-        # padd the images to have a homogenous size (C, 1024, 1024) 
-
-        # x, y = self.padding((x,y[None]))
+        # padd the images to have a homogenous size (500, 500, C) 
         x = TF.to_tensor(x)
         y = TF.to_tensor(y)
-        x = CenterCrop([self.crop_size, self.crop_size])(x)
-        y = CenterCrop([self.crop_size, self.crop_size])(y)
+        x = CenterCrop([self.img_size, self.img_size])(x)
+        y = CenterCrop([self.img_size, self.img_size])(y)
     
         # if it is the training phase, create random (C, 430, 430) crops
         # if it is the evaluation phase, we will leave the orginal size (C, 1024, 1024)
@@ -61,86 +60,16 @@ class SpaceNet7(Dataset):
         y = torch.tensor(y, dtype=torch.uint8)
         
         # normalize the images (image- image.mean()/image.std())
-        # normalize = transforms.Normalize(mean=[0.485, 0.456, 0.406],
-        #                                  std=[0.229, 0.224, 0.225]) 
 
-        normalize = transforms.Normalize(mean=[0.20702111, 0.26308049, 0.24522567],
-                                         std=[0.11984661, 0.11106335, 0.09017803]) 
-
+        # ImageNet mean and std, may not be accurate ...
+        normalize = transforms.Normalize(mean=[0.485, 0.456, 0.406],
+                                         std=[0.229, 0.224, 0.225]) 
+        
         return normalize(x), y
     
     
     def __len__(self):
         return len(self.files)
-    
-    def padding (self, sample):
-        image, mask = sample
-        C, H, W = image.shape
-        # if H == 1024 and W == 1024:
-        #     return image, mask
-        
-        # if  H != 1024:
-        #     image = np.pad(image, (((0,0), (1,0), (0,0))), 'constant', constant_values=(0))
-        #     mask  = np.pad(mask,  (((0,0), (1,0), (0,0))), 'constant', constant_values=(0))
-            
-        # if W != 1024:
-        #     image = np.pad(image, (((0,0), (0,0), (1,0))), 'constant', constant_values=(0))
-        #     mask  = np.pad(mask,  (((0,0), (0,0), (1,0))), 'constant', constant_values=(0))
-        
-        # return image, mask
-
-        if H == self.crop_size and W == self.crop_size:
-            return image, mask
-        
-        if  H != self.crop_size:
-            image = np.pad(image, (((0,0), (1,0), (0,0))), 'constant', constant_values=(0))
-            mask  = np.pad(mask,  (((0,0), (1,0), (0,0))), 'constant', constant_values=(0))
-            
-        if W != self.crop_size:
-            image = np.pad(image, (((0,0), (0,0), (1,0))), 'constant', constant_values=(0))
-            mask  = np.pad(mask,  (((0,0), (0,0), (1,0))), 'constant', constant_values=(0))
-        
-        return image, mask
-
-    
-    # def crop(self, data, seg, crop_size=256):
-    def crop(self, data, seg, crop_size= 1088):
-
-        data_shape = tuple([len(data)] + list(data[0].shape))
-        data_dtype = data[0].dtype
-        dim = len(data_shape) - 2
-
-        seg_shape = tuple([len(seg)] + list(seg[0].shape))
-        seg_dtype = seg[0].dtype
-        assert all([i == j for i, j in zip(seg_shape[2:], data_shape[2:])]), "data and seg must have the same spatial " \
-                                                                             "dimensions. Data: %s, seg: %s" % \
-                                                                             (str(data_shape), str(seg_shape))
-
-        crop_size = [crop_size] * dim
-        data_return = np.zeros([data_shape[0], data_shape[1]] + list(crop_size), dtype=data_dtype)
-        seg_return = np.zeros([seg_shape[0], seg_shape[1]] + list(crop_size), dtype=seg_dtype)
-
-
-        for b in range(data_shape[0]):
-            data_shape_here = [data_shape[0]] + list(data[b].shape)
-            seg_shape_here = [[seg_shape[0]]] + list(seg[0].shape)
-
-            lbs = []
-            for i in range(len(data_shape_here) - 2):
-                lbs.append(np.random.randint(0, data_shape_here[i+2] - crop_size[i]))
-
-            ubs = [lbs[d] + crop_size[d] for d in range(dim)]
-
-            slicer_data = [slice(0, data_shape_here[1])] + [slice(lbs[d], ubs[d]) for d in range(dim)]
-            data_cropped = data[b][tuple(slicer_data)]
-
-            slicer_seg = [slice(0, seg_shape_here[1])] + [slice(lbs[d], ubs[d]) for d in range(dim)]
-            seg_cropped = seg[b][tuple(slicer_seg)]
-
-            data_return[b] = data_cropped
-            seg_return[b] = seg_cropped
-
-        return data_return, seg_return
 
 
 class SpaceNet7DataModule(LightningDataModule):
@@ -151,8 +80,8 @@ class SpaceNet7DataModule(LightningDataModule):
     def setup(self, stage=None):
         files = get_files(self.args.base_dir)
         train_files, test_files = train_test_split(files, test_size=0.1, random_state=self.args.seed)
-        self.spaceNet7_train = SpaceNet7(train_files, self.args.crop_size, self.args.exec_mode)
-        self.spaceNet7_val = SpaceNet7(test_files, self.args.crop_size, self.args.exec_mode)
+        self.spaceNet7_train = SpaceNet7(train_files, self.img_size, self.args.crop_size, self.args.exec_mode)
+        self.spaceNet7_val = SpaceNet7(test_files, self.img_size, self.args.crop_size, self.args.exec_mode)
 
         
     def train_dataloader(self):
