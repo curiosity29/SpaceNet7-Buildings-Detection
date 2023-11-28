@@ -80,8 +80,8 @@ class SpaceNet7DataModule(LightningDataModule):
     def setup(self, stage=None):
         files = get_files(self.args.base_dir)
         train_files, test_files = train_test_split(files, test_size=0.1, random_state=self.args.seed)
-        self.spaceNet7_train = SpaceNet7(train_files, self.img_size, self.args.crop_size, self.args.exec_mode)
-        self.spaceNet7_val = SpaceNet7(test_files, self.img_size, self.args.crop_size, self.args.exec_mode)
+        self.spaceNet7_train = SpaceNet7(train_files, self.args.img_size, self.args.crop_size, self.args.exec_mode)
+        self.spaceNet7_val = SpaceNet7(test_files, self.args.img_size, self.args.crop_size, self.args.exec_mode)
 
         
     def train_dataloader(self):
