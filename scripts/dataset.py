@@ -28,7 +28,8 @@ class SpaceNet7(Dataset):
     def OpenMask(self, idx):
         mask = io.imread(self.files[idx]['mask'])
         # return np.where(mask==255, 1, 0) #change the values to 0 and 1
-        return np.where(mask > 0.0001, 255, 0) #change the values to 0 and 255
+        # return np.where(mask > 0, 1, 0) #change the values to 0 and 255
+        return mask
     
     def __getitem__(self, idx):
         # read the images and masks as numpy arrays
