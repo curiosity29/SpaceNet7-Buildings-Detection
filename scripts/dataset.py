@@ -28,7 +28,7 @@ class SpaceNet7(Dataset):
     def OpenMask(self, idx):
         mask = io.imread(self.files[idx]['mask'])
         # return np.where(mask==255, 1, 0) #change the values to 0 and 1
-        return np.where(mask > 0.0001, 1, 0) #change the values to 0 and 1
+        return np.where(mask > 0.0001, 255, 0) #change the values to 0 and 255
     
     def __getitem__(self, idx):
         # read the images and masks as numpy arrays
@@ -36,8 +36,9 @@ class SpaceNet7(Dataset):
         x = self.OpenImage(idx, invert=False)
         y = self.OpenMask(idx)
         # padd the images to have a homogenous size (500, 500, C) 
-        x = TF.to_tensor(x)
-        y = TF.to_tensor(y)
+        # also convert 0-255 image to 0-1 image
+        x = TF.to_tensor(x)/255
+        y = TF.to_tensor(y)/255
         x = CenterCrop([self.img_size, self.img_size])(x)
         y = CenterCrop([self.img_size, self.img_size])(y)
     
@@ -56,8 +57,8 @@ class SpaceNet7(Dataset):
             # x, y = x[0], y[0]
         
         # numpy array --> torch tensor
-        x = torch.tensor(x, dtype=torch.float32)
-        y = torch.tensor(y, dtype=torch.uint8)
+        x = x.type(torch.float32)
+        y = y.type(torch.uint8)
         
         # normalize the images (image- image.mean()/image.std())
 
