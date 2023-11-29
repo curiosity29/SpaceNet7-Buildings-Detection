@@ -26,9 +26,9 @@ if __name__ == "__main__":
     if args.exec_mode == 'train':
         trainer.fit(model, dm)
     else:
-        predict = trainer.predict(model, datamodule=dm, ckpt_path=args.ckpt_path) 
+        trainer.predict(model, datamodule=dm, ckpt_path=args.ckpt_path) 
 
-        print(predict)
+        # print(predict)
         
         # SpaceNet7DataModule.load_from_checkpoint(args.ckpt_path)
 
