@@ -26,7 +26,7 @@ class Unet(pl.LightningModule):
         img, lbl = batch
         logits = self.model(img)
         loss = self.loss(logits, lbl)
-        self.log("loss", loss, prog_bar=True)
+        # self.log("loss", loss, prog_bar=True)
         return loss
     
     def validation_step(self, batch, batch_idx):
