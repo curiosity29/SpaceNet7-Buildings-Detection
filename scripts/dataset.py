@@ -37,8 +37,8 @@ class SpaceNet7(Dataset):
         y = self.OpenMask(idx)
         # padd the images to have a homogenous size (500, 500, C) 
         # also convert 0-255 image to 0-1 image
-        x = TF.to_tensor(x)/255
-        y = TF.to_tensor(y)/255
+        x = TF.to_tensor(x)
+        y = TF.to_tensor(y)
         x = CenterCrop([self.img_size, self.img_size])(x)
         y = CenterCrop([self.img_size, self.img_size])(y)
     
