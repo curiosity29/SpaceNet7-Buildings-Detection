@@ -31,7 +31,7 @@ class SpaceNet7(Dataset):
         # mask = io.imread(self.files[idx]['mask'])
         # return np.where(mask==255, 1, 0) #change the values to 0 and 1
         # return np.where(mask > 0, 1, 0) #change the values to 0 and 255
-        mask = np.load("self.files[idx]['mask']")
+        mask = np.load(self.files[idx]['mask'])
 
         return mask
     
