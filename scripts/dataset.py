@@ -25,6 +25,7 @@ class SpaceNet7(Dataset):
         # return (image / np.iinfo(image.dtype).max) #render the values between 0 and 1
 
         image = np.load(self.files[idx]['image'])
+        return image
        
     
     def OpenMask(self, idx):
