@@ -26,8 +26,8 @@ def get_main_args():
     arg("--img_size", type=int, default=500, help="input image size")
 
     arg ("--num_workers", type=int, default=2, help="DataLoader num_workers")
-    arg ("--in_channels", type=int, default=3, help="#Input Channels")
-    arg ("--out_channels", type=int, default=1, help="#Output Channels")
+    arg ("--in_channels", type=int, default=4, help="#Input Channels")
+    arg ("--out_channels", type=int, default=8, help="#Output Channels")
     arg ("--learning_rate", type=float, default=1e-4, help="Learning Rate")
     arg ("--weigh_decay", type=float, default=1e-5, help="Weigh Decay")
     arg ("--kernels",  default=[[3, 3]] * 5, help="Convolution Kernels")

@@ -19,22 +19,26 @@ class SpaceNet7(Dataset):
         self.exec_mode = exec_mode
     
     def OpenImage(self, idx, invert=True):
-        image = io.imread(self.files[idx]['image'])[:,:,0:3] #shape (H, W, 3)
-        if invert:
-            image = image.transpose((2,0,1))                 #shape (3, H, W)
-        return (image / np.iinfo(image.dtype).max) #render the values between 0 and 1
+        # image = io.imread(self.files[idx]['image'])[:,:,0:3] #shape (H, W, 3)
+        # if invert:
+        #     image = image.transpose((2,0,1))                 #shape (3, H, W)
+        # return (image / np.iinfo(image.dtype).max) #render the values between 0 and 1
+
+        image = np.load(self.files[idx]['image'])
        
     
     def OpenMask(self, idx):
-        mask = io.imread(self.files[idx]['mask'])
+        # mask = io.imread(self.files[idx]['mask'])
         # return np.where(mask==255, 1, 0) #change the values to 0 and 1
         # return np.where(mask > 0, 1, 0) #change the values to 0 and 255
+        mask = np.load("self.files[idx]['mask']")
+
         return mask
     
     def __getitem__(self, idx):
         # read the images and masks as numpy arrays
         # x = self.OpenImage(idx, invert=True)
-        x = self.OpenImage(idx, invert=False)
+        x = self.OpenImage(idx, invert=False)/255
         y = self.OpenMask(idx)
         # padd the images to have a homogenous size (500, 500, C) 
         # also convert 0-255 image to 0-1 image

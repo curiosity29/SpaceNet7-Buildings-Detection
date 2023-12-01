@@ -41,6 +41,3 @@ model.eval()
 
 # model(x)
 # io.imsave("C:\Test\Github\SpaceNet7-Buildings-Detection\output_samples", model(x))
-
-for x in model:
-    print(x)
