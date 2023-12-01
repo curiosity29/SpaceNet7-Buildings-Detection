@@ -38,7 +38,7 @@ class SpaceNet7(Dataset):
     def __getitem__(self, idx):
         # read the images and masks as numpy arrays
         # x = self.OpenImage(idx, invert=True)
-        x = self.OpenImage(idx, invert=False)/255
+        x = np.array(self.OpenImage(idx, invert=False)).astype(torch.float32)/255
         y = self.OpenMask(idx)
         # padd the images to have a homogenous size (500, 500, C) 
         # also convert 0-255 image to 0-1 image
