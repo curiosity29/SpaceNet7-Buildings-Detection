@@ -18,7 +18,7 @@ class Unet(pl.LightningModule):
         # self.dice = DiceSpaceNet7(n_class=self.args.out_channels)
         
     def forward(self, img):
-        return torch.argmax(self.model(img), dim=1)
+        return torch.softmax(self.model(img), dim=1)
         # return torch.argmax(self.model(img))
         # return torch.argmax(self.model(img, dim=1))
     
@@ -59,7 +59,7 @@ class Unet(pl.LightningModule):
         #     self.best_mean_dice = dice_mean
             
                 
-        metrics = {}
+        # metrics = {}
         # metrics.update({"Mean_Dice": round(dice_mean, 2)})
         # metrics.update({"Highest": round(self.best_dice_mean, 2)})
         # metrics.update({"val_loss": round(loss.item(), 4)})
