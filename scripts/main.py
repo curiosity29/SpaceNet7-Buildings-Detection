@@ -16,7 +16,7 @@ if __name__ == "__main__":
     # model_ckpt = ModelCheckpoint(dirpath="./", filename="best_model",
     #                             monitor="dice_mean", mode="max", save_last=True)
     model_ckpt = ModelCheckpoint(dirpath= args.ckpt_path, filename="best_model",
-                            monitor="dice_mean", mode="max", save_last=True)
+                            mode="max", save_last=True)
     callbacks.append(model_ckpt)
     dm = SpaceNet7DataModule(args)
     trainer = Trainer(callbacks=callbacks, enable_checkpointing=True, max_epochs=args.num_epochs, 
