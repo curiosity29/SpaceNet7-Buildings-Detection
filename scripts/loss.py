@@ -18,8 +18,8 @@ class LossSpaceNet7(nn.Module):
         # self.dice = Dice(num_classes = self.n_class)
 
         # self.ce = CrossEntropyLoss(reduction = 'mean')
-        # self.ce = CrossEntropyLoss()
-        self.ce = nn.BCEWithLogitsLoss()
+        self.ce = CrossEntropyLoss()
+        # self.ce = nn.BCEWithLogitsLoss()
         
     def _loss(self, p, y):
         # one hot n_class
@@ -32,7 +32,7 @@ class LossSpaceNet7(nn.Module):
 
         # dice_loss = self.dice(p, y)
         # return dice_loss
-        return self.ce(p,y)
+        return self.ce(p,y.long())
 
 
         # return self.ce(p,y)

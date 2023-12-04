@@ -56,6 +56,8 @@ class SpaceNet7(Dataset):
     def __getitem__(self, idx):
         # read the images and masks as numpy arrays
         # x = self.OpenImage(idx, invert=True)
+        
+
         x = self.OpenImage(idx, invert=False)/255
         y = self.OpenMask(idx)
         # padd the images to have a homogenous size (500, 500, C) 
@@ -96,6 +98,7 @@ class SpaceNet7(Dataset):
             print(f"unique value for y: {y.unique()}")
             print("\n")
             self.flag = False
+
         return normalize(x), y
     
     
