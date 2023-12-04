@@ -91,13 +91,13 @@ class SpaceNet7(Dataset):
         normalize = transforms.Normalize(mean=[0.485, 0.456, 0.406, 0.5],
                                          std=[0.229, 0.224, 0.225, 0.5]) 
         
-        if self.flag:
-            print("\n CHECKING INPUT FOR MODEL ... \n")
-            print(f"input image shape = {x.shape} with min, max value of: {x.min()}, {x.max()}")
-            print(f"input mask shape = {y.shape} with min, max value of: {y.min()}, {y.max()}")
-            print(f"unique value for y: {y.unique()}")
-            print("\n")
-            self.flag = False
+        # if self.flag:
+        #     print("\n CHECKING INPUT FOR MODEL ... \n")
+        #     print(f"input image shape = {x.shape} with min, max value of: {x.min()}, {x.max()}")
+        #     print(f"input mask shape = {y.shape} with min, max value of: {y.min()}, {y.max()}")
+        #     print(f"unique value for y: {y.unique()}")
+        #     print("\n")
+        #     self.flag = False
 
         return normalize(x), y
     
