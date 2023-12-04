@@ -15,7 +15,7 @@ class Unet(pl.LightningModule):
         self.best_dice, self.best_dice_mean = (0,) * 2
         self.build_model()
         self.loss = LossSpaceNet7(n_class=self.args.out_channels)
-        self.dice = DiceSpaceNet7(n_class=self.args.out_channels)
+        # self.dice = DiceSpaceNet7(n_class=self.args.out_channels)
         
     def forward(self, img):
         return torch.argmax(self.model(img), dim=1)
@@ -33,7 +33,7 @@ class Unet(pl.LightningModule):
         img, lbl = batch
         logits = self.model(img)
         loss = self.loss(logits, lbl)
-        self.dice.update(logits, lbl, loss) 
+        # self.dice.update(logits, lbl, loss) 
 
     def predict_step(self, batch, batch_idx):
         img, lbl = batch
