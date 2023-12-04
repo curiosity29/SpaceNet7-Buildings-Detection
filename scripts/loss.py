@@ -4,7 +4,7 @@ from monai.losses import DiceLoss, FocalLoss
 # from monai.networks import one_hot
 from torch.nn import CrossEntropyLoss
 import torch
-
+from torch.nn import functional as F
 from torchmetrics import Dice
 
 
