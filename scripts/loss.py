@@ -14,9 +14,11 @@ class LossSpaceNet7(nn.Module):
         # self.dice = DiceLoss(sigmoid=True, batch=True)
         # self.ce = FocalLoss(gamma=2.0, to_onehot_y=False)
 
-        self.dice = Dice(num_classes = self.n_class, ignore_index = 1)
+        # self.dice = Dice(num_classes = self.n_class, ignore_index = 1)
+        self.dice = Dice(num_classes = self.n_class)
+
         # self.ce = CrossEntropyLoss(reduction = 'mean')
-        self.ce = CrossEntropyLoss()
+        # self.ce = CrossEntropyLoss()
         
     def _loss(self, p, y):
         # one hot n_class
