@@ -19,7 +19,8 @@ class Unet(pl.LightningModule):
         
     def forward(self, img):
         # return torch.softmax(self.model(img), dim=1)
-        return self.model(img)
+        return torch.argmax(self.model(img), dim=1)
+        # return self.model(img)
         # return torch.argmax(self.model(img))
         # return torch.argmax(self.model(img, dim=1))
     
