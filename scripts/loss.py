@@ -24,11 +24,15 @@ class LossSpaceNet7(nn.Module):
         # one hot n_class
         # one_hot_y = one_hot(y[:, None, ...], num_classes = self.n_class)
 
-        dice_loss = self.dice(p, y)
         # categorical_loss = self.ce(p, y)
 
         # return dice_loss + categorical_loss
-        return dice_loss
+
+
+        # dice_loss = self.dice(p, y)
+        # return dice_loss
+        return 0
+
 
         # return self.ce(p,y)
     

@@ -39,10 +39,11 @@ class Unet(pl.LightningModule):
 
     def predict_step(self, batch, batch_idx):
         img, lbl = batch
-        preds = self.model(img)
-        preds = (nn.Sigmoid()(preds) > 0.5).int()
-        lbl_np = lbl.detach().cpu().numpy()
-        preds_np = preds.detach().cpu().numpy()
+        # preds = self.model(img)
+        # preds = (nn.Sigmoid()(preds) > 0.5).int()
+        # lbl_np = lbl.detach().cpu().numpy()
+        # preds_np = preds.detach().cpu().numpy()
+        
         # np.save(self.args.save_path + 'predictions.npy', preds_np)
         # np.save(self.args.save_path + 'labels.npy', lbl_np)
         # return self.model(batch)
