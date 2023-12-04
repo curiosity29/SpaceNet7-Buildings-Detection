@@ -15,10 +15,10 @@ class LossSpaceNet7(nn.Module):
         # self.ce = FocalLoss(gamma=2.0, to_onehot_y=False)
 
         # self.dice = Dice(num_classes = self.n_class, ignore_index = 1)
-        self.dice = Dice(num_classes = self.n_class)
+        # self.dice = Dice(num_classes = self.n_class)
 
         # self.ce = CrossEntropyLoss(reduction = 'mean')
-        # self.ce = CrossEntropyLoss()
+        self.ce = CrossEntropyLoss()
         
     def _loss(self, p, y):
         # one hot n_class
@@ -31,7 +31,7 @@ class LossSpaceNet7(nn.Module):
 
         # dice_loss = self.dice(p, y)
         # return dice_loss
-        return 0
+        return self.ce(p,y)
 
 
         # return self.ce(p,y)
