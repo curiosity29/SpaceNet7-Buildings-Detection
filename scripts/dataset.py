@@ -17,7 +17,15 @@ class SpaceNet7(Dataset):
         self.img_size = img_size
         self.crop_size = crop_size
         self.exec_mode = exec_mode
-    
+
+        # class indexing
+        classes = [ 0,  1,  2,  4,  5,  7,  8, 11]
+        indexs = np.array(range(1, len(self.classes) + 1))
+        self.dict_index = {}
+        for a, b in zip(self.classes, indexs):
+            self.dict_index[a] = b
+
+
     def OpenImage(self, idx, invert=True):
         # image = io.imread(self.files[idx]['image'])[:,:,0:3] #shape (H, W, 3)
         # if invert:
@@ -27,14 +35,20 @@ class SpaceNet7(Dataset):
         image = np.load(self.files[idx]['image'])
         return image
        
-    
+    def indexing(self, mask):
+        id_mask = np.reshape(mask, -1)
+        id_mask = [self.dict_index[x] for x in mask]
+        id_mask = np.reshape(id_mask, newshape = mask.shape)
+        return id_mask
+        
     def OpenMask(self, idx):
         # mask = io.imread(self.files[idx]['mask'])
         # return np.where(mask==255, 1, 0) #change the values to 0 and 1
         # return np.where(mask > 0, 1, 0) #change the values to 0 and 255
         mask = np.load(self.files[idx]['mask'])
+        id_mask = self.indexing(mask)
 
-        return mask
+        return id_mask
     
     def __getitem__(self, idx):
         # read the images and masks as numpy arrays

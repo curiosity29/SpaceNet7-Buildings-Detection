@@ -14,9 +14,12 @@ class LossSpaceNet7(nn.Module):
         self.ce = CrossEntropyLoss(reduction = 'sum')
         
     def _loss(self, p, y):
-        one_hot_y = one_hot(y[:, None, ...], num_classes = self.n_class)
+        # one hot n_class
+        one_hot_y = one_hot(y[:, None, ...], num_classes = self.n_classes)
+
         dice_loss = self.dice(p, one_hot_y)
         categorical_loss = self.ce(p, y)
+        
         return dice_loss + categorical_loss
 
         # return self.ce(p,y)
