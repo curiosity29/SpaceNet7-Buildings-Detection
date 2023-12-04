@@ -62,9 +62,9 @@ class Unet(pl.LightningModule):
         metrics = {}
         # metrics.update({"Mean_Dice": round(dice_mean, 2)})
         # metrics.update({"Highest": round(self.best_dice_mean, 2)})
-        metrics.update({"val_loss": round(loss.item(), 4)})
+        # metrics.update({"val_loss": round(loss.item(), 4)})
         
-        print(f"Val_Loss {metrics['val_loss']}")
+        print(f"Val_Loss {loss}")
         # self.log("dice_mean", dice_mean)
         torch.cuda.empty_cache()
         gc.collect()
