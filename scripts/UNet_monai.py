@@ -14,7 +14,7 @@ class Unet(pl.LightningModule):
         self.args = args
         self.best_dice, self.best_dice_mean = (0,) * 2
         self.build_model()
-        self.loss = LossSpaceNet7()
+        self.loss = LossSpaceNet7(n_class=self.args.out_channels)
         self.dice = DiceSpaceNet7(n_class=self.args.out_channels)
         
     def forward(self, img):
