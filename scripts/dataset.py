@@ -19,14 +19,14 @@ class SpaceNet7(Dataset):
         self.exec_mode = exec_mode
 
         # checking the first time
-        self.flag = True
+        # self.flag = True
 
         # class indexing
-        classes = [ 0,  1,  2,  4,  5,  7,  8, 11]
-        indexs = np.array(range(0, len(classes)))
-        self.dict_index = {}
-        for a, b in zip(classes, indexs):
-            self.dict_index[a] = b
+        # classes = [ 0,  1,  2,  4,  5,  7,  8, 11]
+        # indexs = np.array(range(0, len(classes)))
+        # self.dict_index = {}
+        # for a, b in zip(classes, indexs):
+        #     self.dict_index[a] = b
 
 
     def OpenImage(self, idx, invert=True):
@@ -35,23 +35,23 @@ class SpaceNet7(Dataset):
         #     image = image.transpose((2,0,1))                 #shape (3, H, W)
         # return (image / np.iinfo(image.dtype).max) #render the values between 0 and 1
 
-        image = np.load(self.files[idx]['image'])
-        return image
+        # image = np.load(self.files[idx]['image'])
+        return np.load(self.files[idx]['image'])
        
-    def indexing(self, mask):
-        id_mask = np.reshape(mask, -1)
-        id_mask = [self.dict_index[x] for x in id_mask]
-        id_mask = np.reshape(id_mask, newshape = mask.shape)
-        return id_mask
+    # def indexing(self, mask):
+    #     id_mask = np.reshape(mask, -1)
+    #     id_mask = [self.dict_index[x] for x in id_mask]
+    #     id_mask = np.reshape(id_mask, newshape = mask.shape)
+    #     return id_mask
         
     def OpenMask(self, idx):
         # mask = io.imread(self.files[idx]['mask'])
         # return np.where(mask==255, 1, 0) #change the values to 0 and 1
         # return np.where(mask > 0, 1, 0) #change the values to 0 and 255
-        mask = np.load(self.files[idx]['mask'])
-        id_mask = self.indexing(mask)
+        # mask = np.load(self.files[idx]['mask'])
+        # id_mask = self.indexing(mask)
 
-        return id_mask
+        return np.load(self.files[idx]['mask'])
     
     def __getitem__(self, idx):
         # read the images and masks as numpy arrays
