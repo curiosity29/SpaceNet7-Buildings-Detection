@@ -18,7 +18,8 @@ class Unet(pl.LightningModule):
         # self.dice = DiceSpaceNet7(n_class=self.args.out_channels)
         
     def forward(self, img):
-        return torch.softmax(self.model(img), dim=1)
+        # return torch.softmax(self.model(img), dim=1)
+        return self.model(img)
         # return torch.argmax(self.model(img))
         # return torch.argmax(self.model(img, dim=1))
     
