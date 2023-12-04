@@ -69,8 +69,8 @@ class SpaceNet7(Dataset):
         # normalize the images (image- image.mean()/image.std())
 
         # ImageNet mean and std, may not be accurate ...
-        normalize = transforms.Normalize(mean=[0.485, 0.456, 0.406],
-                                         std=[0.229, 0.224, 0.225]) 
+        normalize = transforms.Normalize(mean=[0.485, 0.456, 0.406, 0.5],
+                                         std=[0.229, 0.224, 0.225, 0.5]) 
         
         return normalize(x), y
     
