@@ -19,7 +19,7 @@ class LossSpaceNet7(nn.Module):
 
         # self.ce = CrossEntropyLoss(reduction = 'mean')
         # self.ce = CrossEntropyLoss()
-        self.ce = nn.BCEWithLogitsLoss
+        self.ce = nn.BCEWithLogitsLoss()
         
     def _loss(self, p, y):
         # one hot n_class
