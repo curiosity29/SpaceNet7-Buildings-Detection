@@ -95,7 +95,7 @@ class SpaceNet7(Dataset):
             print(f"input mask shape = {y.shape} with min, max value of: {np.min(y)}, {np.max(y)}")
             print(f"unique value for y: {np.unique(y)}")
             print("\n")
-
+            self.flag = False
         return normalize(x), y
     
     
