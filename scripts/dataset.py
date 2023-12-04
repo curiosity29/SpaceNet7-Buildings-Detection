@@ -20,9 +20,9 @@ class SpaceNet7(Dataset):
 
         # class indexing
         classes = [ 0,  1,  2,  4,  5,  7,  8, 11]
-        indexs = np.array(range(1, len(self.classes) + 1))
+        indexs = np.array(range(1, len(classes) + 1))
         self.dict_index = {}
-        for a, b in zip(self.classes, indexs):
+        for a, b in zip(classes, indexs):
             self.dict_index[a] = b
 
 
