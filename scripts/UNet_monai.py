@@ -51,7 +51,7 @@ class Unet(pl.LightningModule):
         
     def validation_epoch_end(self, outputs):
         # dice, loss = self.dice.compute()
-        loss = self.loss
+        # loss = self.loss
         # dice_mean = dice.item()
         # self.dice.reset()
         
@@ -64,7 +64,7 @@ class Unet(pl.LightningModule):
         # metrics.update({"Highest": round(self.best_dice_mean, 2)})
         # metrics.update({"val_loss": round(loss.item(), 4)})
         
-        print(f"Val_Loss {loss}")
+        print(f"Val_Loss {self.loss}")
         # self.log("dice_mean", dice_mean)
         torch.cuda.empty_cache()
         gc.collect()
