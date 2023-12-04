@@ -37,7 +37,7 @@ class SpaceNet7(Dataset):
        
     def indexing(self, mask):
         id_mask = np.reshape(mask, -1)
-        id_mask = [self.dict_index[x] for x in mask]
+        id_mask = [self.dict_index[x] for x in id_mask]
         id_mask = np.reshape(id_mask, newshape = mask.shape)
         return id_mask
         
