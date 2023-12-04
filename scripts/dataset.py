@@ -18,6 +18,9 @@ class SpaceNet7(Dataset):
         self.crop_size = crop_size
         self.exec_mode = exec_mode
 
+        # checking the first time
+        self.flag = True
+
         # class indexing
         classes = [ 0,  1,  2,  4,  5,  7,  8, 11]
         indexs = np.array(range(0, len(classes)))
@@ -86,6 +89,13 @@ class SpaceNet7(Dataset):
         normalize = transforms.Normalize(mean=[0.485, 0.456, 0.406, 0.5],
                                          std=[0.229, 0.224, 0.225, 0.5]) 
         
+        if self.flag:
+            print("\n CHECKING INPUT FOR MODEL ... \n")
+            print(f"input image shape = {x.shape} with min, max value of: {np.min(x)}, {np.max(x)}")
+            print(f"input mask shape = {y.shape} with min, max value of: {np.min(y)}, {np.max(y)}")
+            print(f"unique value for y: {np.unique(y)}")
+            print("\n")
+
         return normalize(x), y
     
     
