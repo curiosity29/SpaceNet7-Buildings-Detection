@@ -44,7 +44,7 @@ class LossSpaceNet7(nn.Module):
         return self._loss(p, y)
     
 
-    def dice_loss(logits, true, eps=1e-7):
+    def dice_loss(self, logits, true, eps=1e-7):
         """Computes the Sørensen–Dice loss.
 
         Note that PyTorch optimizers minimize a loss. In this
@@ -52,9 +52,9 @@ class LossSpaceNet7(nn.Module):
         return the negated dice loss.
 
         Args:
-            true: a tensor of shape [B, 1, H, W].
             logits: a tensor of shape [B, C, H, W]. Corresponds to
                 the raw output or logits of the model.
+            true: a tensor of shape [B, 1, H, W].
             eps: added to the denominator for numerical stability.
 
         Returns:
